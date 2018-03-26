@@ -80,6 +80,7 @@
                         </tr>
                         <tr>
                             <td><button type="submit">Submit</button></td>
+                            <td><a href="login.jsp">Already User</a></td>
                         </tr>
                         
                    </table>

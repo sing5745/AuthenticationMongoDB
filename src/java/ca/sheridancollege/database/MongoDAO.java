@@ -7,6 +7,7 @@ package ca.sheridancollege.database;
 
 import ca.sheridancollege.beans.User;
 import com.mongodb.*;
+import java.util.ArrayList;
 
 /**
  *
@@ -18,6 +19,7 @@ public class MongoDAO {
      DB database = mongo.getDB("mydb");
      DBCollection userCollection = database.getCollection("users");  
     private String message;
+    ArrayList<User> usersList = new ArrayList();
      
     public void addUsers(User u)
     {
@@ -44,12 +46,12 @@ public class MongoDAO {
             String email = (String) obj.get("email");
             String password = (String) obj.get("password");
             
-            System.out.println(email + " " + password);
-            
+           
              if(u.getEmail().equals(email) && u.getPassword().equals(password))
              {
                b[0] = true; 
                setMessage("User Already Exists");
+               
              }
             /** Need to fix for the login  **/
              else if(u.getEmail().equals(email) || u.getPassword().equals(password))
@@ -59,9 +61,49 @@ public class MongoDAO {
             }
 
         }
-        
+         
+      
      return b[0];
     }
+
+    public ArrayList<User> getUsersList() {
+        return usersList;
+    }
+
+    public void setUsersList(ArrayList<User> usersList) {
+        this.usersList = usersList;
+    }
+      
+      public boolean checkUserLogin(User u)
+    {
+         boolean[] b = new boolean[1];
+         
+       
+    for (DBObject obj : userCollection.find()) {
+        
+            String email = (String) obj.get("email");
+            String password = (String) obj.get("password");
+             String fName = (String) obj.get("firstname");
+             String lName = (String) obj.get("lastname");
+            
+            User user = new User(fName,lName,password,email);
+            usersList.add(user);
+            System.out.println(email + " " + password);
+            
+             if(u.getEmail().equals(email) && u.getPassword().equals(password))
+             {
+               b[0] = true; 
+               
+             }
+             else{
+                 setMessage("Couldn't find you");
+             }
+
+        }
+     setUsersList(usersList);  
+        
+     return b[0];
+    }  
 
     public void setMessage(String msg) {
         this.message = msg;

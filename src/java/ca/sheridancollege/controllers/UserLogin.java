@@ -14,6 +14,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -32,6 +33,7 @@ public class UserLogin extends HttpServlet {
         String email = request.getParameter("email");
         String password = request.getParameter("pass");        
        
+        HttpSession session = request.getSession();
         
             User user = new User();    
             user.setEmail(email);
@@ -39,9 +41,10 @@ public class UserLogin extends HttpServlet {
             System.out.println(user.toString());
             MongoDAO mongoDB = new MongoDAO(); 
 
-            if( mongoDB.checkUser(user) == true)
+            if( mongoDB.checkUserLogin(user) == true)
             {
-                response.sendRedirect("registration.html");
+                session.setAttribute("Users", mongoDB.getUsersList());
+                response.sendRedirect("view.jsp");
                 System.out.println("Logged In");
             }
             else{

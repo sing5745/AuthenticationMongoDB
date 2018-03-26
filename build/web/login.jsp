@@ -64,6 +64,7 @@
                     </tr>
                     <tr>
                         <td><button type="submit">Submit</button></td>
+                        <td><a href="index.jsp">Register</a></td>
                     </tr>
                 </table>
             </form>
