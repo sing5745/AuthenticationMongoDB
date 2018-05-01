@@ -15,15 +15,17 @@ import java.util.ArrayList;
  */
 public class MongoDAO {
     
-     MongoClient mongo = new MongoClient(new ServerAddress("Localhost", 27017));
-     DB database = mongo.getDB("mydb");
-     DBCollection userCollection = database.getCollection("users");  
+ 
     private String message;
     ArrayList<User> usersList = new ArrayList();
-     
+    
+    MongoClientURI uri = new MongoClientURI("mongodb://root:root@ds115214.mlab.com:15214/mydb");
+    MongoClient client = new MongoClient(uri);
+    DB db = client.getDB(uri.getDatabase());
+    DBCollection userCollection = db.getCollection("texts");
+    
     public void addUsers(User u)
     {
-        
        
         BasicDBObject dbo = new BasicDBObject();
         dbo.append("firstname", u.getFirstname());
@@ -31,9 +33,9 @@ public class MongoDAO {
         dbo.append("email", u.getEmail());
         dbo.append("password", u.getPassword());
        // dbo.append("lastname", u.);
-        userCollection.insert(dbo);
-        mongo.close();
         
+        userCollection.insert(dbo);
+        client.close();
     }
     
       public boolean checkUser(User u)
@@ -101,7 +103,8 @@ public class MongoDAO {
 
         }
      setUsersList(usersList);  
-        
+     client.close();
+     
      return b[0];
     }  
 

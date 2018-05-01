@@ -46,6 +46,7 @@ public class UserRegistration extends HttpServlet {
         
         if(mongoDB.checkUser(user))
         {
+            
             message = mongoDB.getMessage();
             request.setAttribute("message", message);
             RequestDispatcher view = request.getRequestDispatcher("index.jsp");
