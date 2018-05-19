@@ -24,6 +24,7 @@ public class MongoDAO {
     DB db = client.getDB(uri.getDatabase());
     DBCollection userCollection = db.getCollection("texts");
     
+    
     public void addUsers(User u)
     {
        
@@ -32,18 +33,22 @@ public class MongoDAO {
         dbo.append("lastname", u.getLastname());
         dbo.append("email", u.getEmail());
         dbo.append("password", u.getPassword());
-       // dbo.append("lastname", u.);
+       
         
         userCollection.insert(dbo);
         client.close();
     }
     
+    
+    /**
+    * This method checks for email and password existence when new user is registering
+    **/
       public boolean checkUser(User u)
     {
          boolean[] b = new boolean[1];
          
        
-    for (DBObject obj : userCollection.find()) {
+        for (DBObject obj : userCollection.find()) {
         
             String email = (String) obj.get("email");
             String password = (String) obj.get("password");
@@ -76,12 +81,15 @@ public class MongoDAO {
         this.usersList = usersList;
     }
       
+    /**
+    * This method checks username and password and gives the  all the users list
+    */
       public boolean checkUserLogin(User u)
     {
          boolean[] b = new boolean[1];
          
        
-    for (DBObject obj : userCollection.find()) {
+       for (DBObject obj : userCollection.find()) {
         
             String email = (String) obj.get("email");
             String password = (String) obj.get("password");
